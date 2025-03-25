@@ -1,0 +1,32 @@
+name: Deploy React
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # DEPLOY ON GITHUB PAGES
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      uses: oven-sh/setup-bun@v2
+
+    - name: Install deps
+      uses: bun i
+
+    - name: Build app
+      uses: bun run build
+
+    - name: Deploying
+      uses: JamesIves/github-pages-deploy-action@v4.1.0
+      with:
+        branch: gh-pages  # The branch where your app will be deployed
+        folder: build     # The folder containing the production build (created by `npm run build`)
+        token: ${{ secrets.GITHUB_TOKEN }}  # GitHub automatically provides a token
+
+
